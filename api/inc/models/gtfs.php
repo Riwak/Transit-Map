@@ -4,7 +4,7 @@ class GTFS {
         $day_of_week = date('l');
         $day_of_week = strtolower($day_of_week);
 
-        $ymd = date('Ymd');
+        $ymd = '20160913';
         
         $calendar_rows = DB::getCalendarRows();
         $service_ids = array();

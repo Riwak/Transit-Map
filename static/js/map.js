@@ -10,7 +10,7 @@ var simulation_manager = (function(){
         return {
             init: function() {
                 $.ajax({
-                    url: 'static/js/config.js',
+                    url: 'static/js/config.js?t='+Date.now(),
                     dataType: 'json',
                     async: false,
                     success: function(config_params) {
@@ -875,10 +875,6 @@ var simulation_manager = (function(){
             }
 
             map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
-            
-            var stamen_map = new google.maps.StamenMapType('watercolor');
-            stamen_map.set('name', 'Stamen watercolor');
-            map.mapTypes.set('stamen', stamen_map);
 
             function map_layers_add(){
                 var edges_layer;
@@ -944,7 +940,7 @@ var simulation_manager = (function(){
                 }
 
                 // GTFS layers - stops.txt
-                ft_id = config.getParam('ft_layer_ids.gtfs_stops');
+                /*ft_id = config.getParam('ft_layer_ids.gtfs_stops');
                 if (ft_id !== null) {
                     stations_layer = new google.maps.FusionTablesLayer({
                         query: {
@@ -959,7 +955,7 @@ var simulation_manager = (function(){
                         var station_id = ev.row.stop_id.value;
                         simulation_panel.displayStation(station_id);
                     });
-                }
+                }*/
 
                 // Area mask
                 ft_id = config.getParam('ft_layer_ids.mask');
