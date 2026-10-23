@@ -76,26 +76,33 @@ http://ad-inc.fr
 					<SELECT name="line" size="1" class="form-control" autofocus required style="width: 290px; height: 43px;">
 					
 					<?php
-					include("config.php");
-   	  				$base = mysql_connect (HOST, USER, PASS);
-	  				mysql_select_db (BDD, $base);
-	  
-	  	  			$reponse = mysql_query("SELECT * FROM Line");
-	  				$i = 0;
-					
-	  				while ($donnees = mysql_fetch_array($reponse))
-	  				{
-						$i++;
-						echo "<OPTION value='$donnees[0]'>Ligne $donnees[0] - $donnees[2]/  $donnees[3]";
-						
-						/*<OPTION value="2">Ligne 2 - Porte Dauphine/ Nation
-						<OPTION value="3">Ligne 3 - Pont de Levallois Bécon/ Galliani
-						<OPTION value="4">Ligne 4 - Porte de Clignancourt/ Mairie de Montrouge
-						<OPTION value="6">Ligne 6 - Charles de Gaulle Étoile/ Nation
-						<OPTION value="10">Ligne 10 - Gare d'Austerlitz/ Boulogne Pont de Saint Cloud*/
-					}
-					
-					?>
+                    include("config.php");
+
+                    try {
+                        $pdo = new PDO(
+                            "mysql:host=" . HOST . ";dbname=" . BDD . ";charset=utf8",
+                            USER,
+                            PASS,
+                            [
+                                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_NUM
+                            ]
+                        );
+
+                        $reponse = $pdo->query("SELECT * FROM Line");
+
+                        while ($donnees = $reponse->fetch())
+                        {
+                            echo "<option value=\"" . htmlspecialchars($donnees[0]) . "\">";
+                            echo "Ligne " . htmlspecialchars($donnees[0]) . " - ";
+                            echo htmlspecialchars($donnees[2]) . " / " . htmlspecialchars($donnees[3]);
+                            echo "</option>";
+                        }
+
+                    } catch (PDOException $e) {
+                        die("Erreur de connexion à la base de données.");
+                    }
+                    ?>
 					
 					</SELECT>
 					</br>
